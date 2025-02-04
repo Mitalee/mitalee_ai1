@@ -1,0 +1,185 @@
+openapi: 3.1.0
+info:
+  title: YouTube Data API
+  description: Searches YouTube for videos and retrieves video statistics.
+  version: 1.0.0
+servers:
+  - url: https://youtube.googleapis.com/youtube/v3
+    description: YouTube Data API v3 server
+paths:
+  /search:
+    get:
+      operationId: searchYouTubeExact
+      summary: Searches YouTube for videos matching an exact query.
+      description: |
+        Returns a list of YouTube videos that match the search query exactly.
+        The `q` parameter is required and should be enclosed in double quotes (`"%22query%22"`) 
+        to ensure an exact match search.
+      parameters:
+        - name: part
+          in: query
+          required: true
+          description: The resource properties to include in the API response.
+          schema:
+            type: string
+            enum: [snippet]
+            default: snippet
+        - name: q
+          in: query
+          required: true
+          description: |
+            The exact search query. To ensure an exact match, the query should be enclosed in double quotes (`"%22query%22"`).
+          schema:
+            type: string
+            example: "%22Khaata.in%22"
+        - name: type
+          in: query
+          required: false
+          description: Restrict results to a particular resource type, such as "video".
+          schema:
+            type: string
+            enum: [video]
+            default: video
+        - name: maxResults
+          in: query
+          required: false
+          description: The maximum number of results to return.
+          schema:
+            type: integer
+            default: 5
+            minimum: 1
+            maximum: 5
+        - name: key
+          in: query
+          required: true
+          description: Your YouTube Data API key.
+          schema:
+            type: string
+        - name: order
+          in: query
+          required: false
+          description: Order of search results. Defaults to "date" to show the most recent videos first.
+          schema:
+            type: string
+            enum: [date, rating, relevance, title, videoCount, viewCount]
+            default: date
+
+      responses:
+        '200':
+          description: A list of YouTube video search results matching the exact query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YouTubeSearchResponse'
+        '400':
+          description: Bad request, possibly due to missing or incorrect parameters.
+        '403':
+          description: Access forbidden, likely due to API key issues.
+        '500':
+          description: Internal server error.
+
+  /videos:
+    get:
+      operationId: getVideoStatistics
+      summary: Retrieves video statistics for one or more video IDs.
+      description: |
+        Returns statistics (views, likes, comments) for the provided YouTube video IDs.
+        The `id` parameter supports **comma-separated** video IDs.
+      parameters:
+        - name: part
+          in: query
+          required: true
+          description: The resource properties to include in the API response.
+          schema:
+            type: string
+            enum: [statistics]
+            default: statistics
+        - name: id
+          in: query
+          required: true
+          description: Comma-separated list of YouTube video IDs.
+          schema:
+            type: string
+            example: "6Xe2HWo21zc,_q2q6NJgYYo,CUzFP3RDA_k"
+        - name: key
+          in: query
+          required: true
+          description: Your YouTube Data API key.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Video statistics for the given video IDs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YouTubeVideoStatisticsResponse'
+        '400':
+          description: Bad request, possibly due to missing or incorrect parameters.
+        '403':
+          description: Access forbidden, likely due to API key issues.
+        '500':
+          description: Internal server error.
+
+components:
+  schemas:
+    YouTubeSearchResponse:
+      type: object
+      properties:
+        kind:
+          type: string
+          example: "youtube#searchListResponse"
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: object
+                properties:
+                  videoId:
+                    type: string
+                    example: "dQw4w9WgXcQ"
+              snippet:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    example: "Example Video Title"
+                  description:
+                    type: string
+                    example: "This is an example description."
+                  channelTitle:
+                    type: string
+                    example: "Example Channel"
+                  publishedAt:
+                    type: string
+                    format: date-time
+                    example: "2023-01-01T12:34:56Z"
+
+    YouTubeVideoStatisticsResponse:
+      type: object
+      properties:
+        kind:
+          type: string
+          example: "youtube#videoListResponse"
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "6Xe2HWo21zc"
+              statistics:
+                type: object
+                properties:
+                  viewCount:
+                    type: string
+                    example: "1000000"
+                  likeCount:
+                    type: string
+                    example: "50000"
+                  commentCount:
+                    type: string
+                    example: "1200"
