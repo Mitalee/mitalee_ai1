@@ -1,0 +1,9 @@
+Run,Model,Prompt,Tool,Model Type
+1,gpt-3.5-turbo,Basic,No,Execution
+2,gpt-3.5-turbo-0125,Basic,No,Reasoning
+3,gpt-3.5-turbo,Basic,Yes,Execution
+4,gpt-3.5-turbo-0125,Basic,Yes,Reasoning
+5,gpt-3.5-turbo,Add Schema,No,Execution
+6,gpt-3.5-turbo-0125,Add Schema,No,Reasoning
+7,gpt-3.5-turbo,Add Schema,Yes,Execution
+8,gpt-3.5-turbo-0125,Add Schema,Yes,Reasoning

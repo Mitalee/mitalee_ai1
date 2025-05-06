@@ -1,0 +1,43 @@
+question,SQL query,answer
+How many orders did I have in November 2021,"SELECT COUNT(DISTINCT ""Order Id"") FROM orders
+        WHERE ""Transaction Type"" = 'Shipment'
+        AND strftime('%Y-%m', ""Order Date"") = '2021-11';",7372
+How many orders got refunded,"SELECT COUNT(DISTINCT ""Order Id"") FROM orders
+        WHERE ""Transaction Type"" = 'Refund';",235
+How many orders got cancelled,"SELECT COUNT(DISTINCT ""Order Id"") FROM orders
+        WHERE ""Transaction Type"" = 'Cancel';",1159
+How many orders did we ship,"SELECT COUNT(DISTINCT ""Order Id"") FROM orders
+        WHERE ""Transaction Type"" = 'Shipment';",6213
+Total how many different products were shipped,"SELECT COUNT(DISTINCT ""Item Description"") FROM orders
+        WHERE ""Transaction Type"" = 'Shipment';",229
+How many replacements did we have to give,"SELECT COUNT(*) 
+FROM orders 
+WHERE ""Transaction Type"" = 'FreeReplacement';",43
+Which was the SKU causing maximum replacements,"SELECT ""Sku"", COUNT(*) AS replacement_count
+FROM orders
+WHERE ""Transaction Type"" = 'FreeReplacement'
+GROUP BY ""Sku""
+ORDER BY replacement_count DESC
+LIMIT 1;",Meishi Vietnamese Gluten Free Spring Rice Paper Roll  340gm  22 cm 
+which was the second highest SKU causing maximum replacements,"SELECT ""Sku"", COUNT(*) AS replacement_count
+FROM orders
+WHERE ""Transaction Type"" = 'FreeReplacement'
+GROUP BY ""Sku""
+ORDER BY replacement_count DESC
+LIMIT 1 OFFSET 1;",Bel Normande Sparkling Red Grape Juice 750ml
+top 5 refunded items,"SELECT ""Item Description"", COUNT(*) AS refund_count
+FROM orders
+WHERE ""Transaction Type"" = 'Refund'
+GROUP BY ""Item Description""
+ORDER BY refund_count DESC
+LIMIT 5;","Bel Normande Sparkling Red Grape Juice 750ml,	31
+Maple Joe Canadian Grade A Maple Syrup  250g   Vegan   Light and Delicate   No Additives  No Added Colours,	21
+Sol 100  Spanish Extra Virgin Olive Oil Glass Bottle  1L, 	15
+Meishi Vietnamese Gluten Free Spring Rice Paper Roll  340gm  22 cm, 	13
+Sol 100  Spanish Extra Virgin Olive Oil Glass Bottle  500ml, 	12"
+What was my top selling item,"SELECT ""Item Description"", COUNT(*) AS shipment_count
+FROM orders
+WHERE ""Transaction Type"" = 'Shipment'
+GROUP BY ""Item Description""
+ORDER BY shipment_count DESC
+LIMIT 1;","Maple Joe Canadian Grade A Maple Syrup  250g   Vegan   Light and Delicate   No Additives  No Added Colours	877"

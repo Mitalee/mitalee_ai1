@@ -1,0 +1,62 @@
+,,,,system_prompt,"""""""You are an expert AI analyst that generates SQL queries and executes them for a database with schema {PROMPT_SCHEMA} for user_id {user_id} ONLY.
+                                    Use the business logic {BUSINESS_LOGIC} for generating queries.
+                                    Do not mention anything regarding the database or rows or columns or tables to the user.
+                                    Generate the query, run it and Summarize the result."""""""
+,,,,database_schema,"""""""Here is the schema for a database:
+
+transactions_orderdetails:
+- order_table_id (int, NOT NULL)
+- igst_amount, tcs_cgst_rate, tcs_cgst_amount, tcs_sgst_rate, tcs_sgst_amount, tcs_utgst_rate, tcs_utgst_amount, tcs_igst_rate, tcs_igst_amount, shipping_amount_basis, shipping_promo_discount_basis, shipping_promo_tax, shipping_cgst_tax, shipping_sgst_tax, shipping_igst_tax, gift_wrap_amount_basis, gift_wrap_promo_discount_basis, gift_wrap_promo_tax, gift_wrap_cgst_tax, gift_wrap_sgst_tax, gift_wrap_igst_tax, item_promo_discount_basis, item_promo_tax (all double precision, NOT NULL)
+- updated, created (timestamp with time zone, NOT NULL)
+- id (int, NOT NULL, auto-increment)
+- is_inactive, khaata_modified (boolean, NOT NULL)
+- quantity (int, NOT NULL)
+- tax_exclusive_gross, principal_amount_basis, total_tax_amount, compensatory_cess_tax (double precision, NOT NULL)
+- cgst_rate, cgst_amount, sgst_rate, sgst_amount, igst_rate (double precision, NOT NULL)
+- sku_description, sku, line_item_id (varchar, NOT NULL)
+- shipment_id (varchar, NOT NULL)
+- hsn, warehouse_id (varchar, nullable)
+
+transactions_orders:
+- user_id (int, NOT NULL)
+- id (int, NOT NULL, auto-increment)
+- invoice_date, order_date (date, NOT NULL)
+- invoice_amount (double precision, NOT NULL)
+- credit_note_date (date, nullable)
+- updated, created (timestamp with time zone, NOT NULL)
+- order_id, business_type, transaction_type, invoice_number (varchar, NOT NULL)
+- seller_gstin (varchar, nullable)
+- ship_from_state, ship_to_state, credit_note_no (varchar, nullable)
+- customer_name, customer_phone, customer_address, customer_email, customer_pincode, customer_state, customer_country (varchar, nullable)
+- payment_method_code, dispatch_doc_no, dispatch_carrier, dispatch_date, dispatch_destination (varchar, nullable)
+"""""""
+,,,,business_logic," """""" For sales or orders, filter by transaction_type as 'Shipment'. For refunds, filter by transaction_type as 'refund'. If the user asks about replaced products, filter by transaction_type as FreeReplacement'"""""""
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
+,,,,,
